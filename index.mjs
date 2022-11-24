@@ -6,7 +6,7 @@ const notion = new Client({ auth: process.env.NOTION_KEY })
 
 const databaseId = process.env.NOTION_DATABASE_ID
 
-async function addItem(text) {
+async function addItem() {
 
   try {
     const response = await notion.databases.query({
@@ -18,10 +18,10 @@ async function addItem(text) {
         }
       }
     })
-    console.log(response.results[0].properties)
+    console.log(response.results[0].properties.Nome.title[0].plain_text)
   } catch (error) {
     console.error(error.body)
   }
 }
 
-addItem("Yurts in Big Sur, California")
+addItem()
