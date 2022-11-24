@@ -1,6 +1,5 @@
 {
   "name": "notion-automation",
-  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -18,7 +17,11 @@
   },
   "homepage": "https://github.com/Bogghi/notion-automation#readme",
   "dependencies": {
+    "@google-cloud/local-auth": "^2.1.0",
     "@notionhq/client": "^2.2.2",
-    "dotenv": "^16.0.2"
+    "dotenv": "^16.0.2",
+    "googleapis": "^105.0.0",
+    "require": "^2.4.20",
+    "requirejs": "^2.3.6"
   }
 }
