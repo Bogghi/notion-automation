@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as process from 'process'
 import { authenticate } from "@google-cloud/local-auth"
-import { GoogleApis } from "googleapis"
+import { google, GoogleApis } from "googleapis"
 
 dotenv.config()
 
@@ -90,6 +90,42 @@ const preparateDataForCalendar = () => getSceduledEvents().then((resolve) => {
     return scheduledEvenets
 })
 
+const loadSavedCredentialsIfExists = async () => {
+    try{
+        const content = await fs.readFile(TOKEN_PATH)
+        const credentials = JSON.parse(content)
+        return google.auth.fromJSON(credentials)
+    }catch(err){
+        return null
+    }
+}
 
+const saveCredentials = async (client) => {
+    const content = await fs.readFile(CREDENTIALS_PATH)
+    const keys = JSON.parse(content)
+    const key = kyes.installed || kyes.web
+    const payload = JSON.stringify({
+        type: 'authorized_user',
+        client_id: key.client_id,
+        client_secret: key.client_secret,
+        refresh_token: client.credentials.refresh_token
+    })
+    await fs.writeFile(TOKEN_PATH, payload)
+}
+
+const authorize = async () => {
+    let client = await loadSavedCredentialsIfExists();
+    if(client)
+        return client
+
+    client = await authenticate({
+        scopes: SCOPES,
+        keyfilePath: CREDENTIALS_PATH
+    })
+    if(client.credentials)
+        await saveCredentials(client)
+    
+    return client
+}
 
 preparateDataForCalendar().then((resolve) => console.log(resolve))
