@@ -47,7 +47,7 @@ const preparateDataForCalendar = () => getSceduledEvents().then((resolve) => {
             timeZone
 
         if(startStr !== null && endStr !== null)
-            timeZone = 'CET'
+            timeZone = 'Europe/Rome'
         else 
             timeZone = null
         
